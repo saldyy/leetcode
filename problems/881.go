@@ -2,12 +2,11 @@
 package main
 
 import (
-	//"github.com/saldyy/leetcode/libs"
 	"fmt"
 	"sort"
 )
 
-func Solution(people []int, limit int) int {
+func Solution881(people []int, limit int) int {
 	sort.Slice(people, func(i, j int) bool {
 		return people[i] > people[j]
 	})
