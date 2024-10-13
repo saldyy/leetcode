@@ -71,10 +71,12 @@ func (this *LRUCache) addToNode(key int, value int) {
 }
 
 func (this *LRUCache) moveToHead(key int) {
+	// If key is head node, return
 	if this.head == this.cache[key] {
 		return
 	}
 
+	// In case of key is tail node
 	if this.tail == this.cache[key] {
 		// Update tail to next to tail
 		this.tail = this.cache[key].Next
@@ -87,9 +89,11 @@ func (this *LRUCache) moveToHead(key int) {
 		return
 	}
 
+	// Link Prev Node with Next Node
 	this.cache[key].Prev.Next = this.cache[key].Next
 	this.cache[key].Next.Prev = this.cache[key].Prev
 
+	// Update Head Node
 	this.head.Next = this.cache[key]
 	this.cache[key].Prev = this.head
 	this.cache[key].Next = nil
