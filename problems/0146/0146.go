@@ -60,13 +60,6 @@ func (this *LRUCache) PrintList() {
 }
 
 func (this *LRUCache) addToNode(key int, value int) {
-	// Handle if the current key is already set
-	if this.cache[key] != nil {
-		this.cache[key].Value = value	
-		this.moveToHead(key)
-		return
-	}
-
 	this.cache[key] = &Node{Value: value, Key: key, Prev: this.head, Next: nil}
 	if len(this.cache) == 1 {
 		this.tail = this.cache[key]
@@ -121,6 +114,13 @@ func (this *LRUCache) Get(key int) int {
 }
 
 func (this *LRUCache) Put(key int, value int) {
+	// Handle if the current key is already set
+	if this.cache[key] != nil {
+		this.cache[key].Value = value	
+		this.moveToHead(key)
+		return
+	}
+
 	this.addToNode(key, value)
 	if len(this.cache) > this.capcity {
 		this.removeTailNode()
