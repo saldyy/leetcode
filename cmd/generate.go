@@ -76,15 +76,14 @@ This command helps streamline the workflow for solving LeetCode problems by prov
 
 		problemName = promptInteractiveInput("Enter the problem's name (required): ", "").(string)
 		expectingReturnType = promptInteractiveInput("Enter the expecting return type (required): ", "").(string)
-		numberOfInputParams = promptInteractiveInput("Enter the number of params(required): ", 0).(int)
+		numberOfInputParams = promptInteractiveInput("Enter the number of params (required): ", 0).(int)
 		var b strings.Builder
 		var argsBuilder strings.Builder
 
 		for i := 1; i <= numberOfInputParams; i++ {
-			b.WriteString("Enter ")
-			b.WriteString(string(i))
-			b.WriteString(" type: ")
-			it := promptInteractiveInput(b.String(), "").(string)
+			prompt := fmt.Sprintf("Enter %d argument type: ", i)
+
+			it := promptInteractiveInput(prompt, "").(string)
 			b.Reset()
 
 			argsBuilder.WriteString(string((i - 1) + 'a'))
@@ -96,11 +95,6 @@ This command helps streamline the workflow for solving LeetCode problems by prov
 		}
 
 		inputArgsStr = argsBuilder.String()
-
-		fmt.Printf("P: %s\n", problemName)
-		fmt.Printf("E: %s\n", expectingReturnType)
-		fmt.Printf("%d\n", numberOfInputParams)
-		fmt.Printf("%s\n", inputArgsStr)
 
 		writeExecutionTemplate()
 		writeTestingTemplate()
@@ -117,7 +111,6 @@ func promptInteractiveInput(prompt string, inputType interface{}) interface{} {
 
 		switch reflect.TypeOf(inputType).Kind() {
 		case reflect.String:
-			fmt.Printf("%s\n", rawInput)
 			if rawInput == "" {
 				fmt.Printf("Input cannot be empty. Please try again.\n")
 				break
@@ -146,7 +139,7 @@ func writeExecutionTemplate() {
 	content = strings.Replace(content, "{input}", inputArgsStr, -1)
 	content = strings.Replace(content, "{expectingReturnType}", expectingReturnType, -1)
 
-  checkFolder(folderPath)
+	checkFolder(folderPath)
 	writeFile(folderPath, fileName, content)
 }
 
@@ -166,7 +159,6 @@ func checkFolder(folderPath string) {
 	fileCheck := "Y"
 
 	if info, err := os.Stat(folderPath); err == nil {
-		fmt.Printf("Size: %d", info.Size())
 		for {
 			if info.Size() == 0 {
 				break
@@ -178,7 +170,6 @@ func checkFolder(folderPath string) {
 				break
 			}
 			fmt.Printf("Input must be Y or N.\n")
-
 		}
 	}
 	if fileCheck == "N" {
@@ -186,7 +177,10 @@ func checkFolder(folderPath string) {
 		os.Exit(0)
 	}
 
-	os.Mkdir(folderPath, os.ModeDir)
+	fmt.Printf("Emptying folder...\n")
+	os.RemoveAll(folderPath)
+	os.MkdirAll(folderPath, 0755)
+	fmt.Printf("Done.\n")
 }
 
 func writeFile(folderPath string, fileName string, content string) {
