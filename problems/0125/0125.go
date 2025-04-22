@@ -3,7 +3,6 @@ package problem125
 import (
 	"fmt"
 	"strings"
-	"unicode"
 )
 
 func formatChar(b byte) (bool, byte) {

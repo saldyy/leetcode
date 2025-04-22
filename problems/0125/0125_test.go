@@ -42,6 +42,20 @@ func TestExecute(t *testing.T) {
       },
       expected: false,
     },
+    {
+      name: "Case 005",
+      input: Input{
+        s: ".,",
+      },
+      expected: true,
+    },
+    {
+      name: "Case 006",
+      input: Input{
+        s: ".,.",
+      },
+      expected: true,
+    },
   }
 
 	for _, c := range cases {
