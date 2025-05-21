@@ -13,38 +13,29 @@ func printArr(arr [][]int) {
 }
 
 func setZeroes(matrix [][]int) {
-	m := make(map[string]bool)
+	row := make(map[int]bool)
+	col := make(map[int]bool)
 
 	for i := range matrix {
 		for j := range matrix[i] {
-			if matrix[i][j] != 0 {
-				continue
-			}
-			key := fmt.Sprintf("%d-%d", i, j)
-			if m[key] {
-				continue
-			}
-			// mark horizontal
-			for z := 0; z < len(matrix[i]); z++ {
-				if matrix[i][z] == 0 {
-					continue
-				}
-				nextK := fmt.Sprintf("%d-%d", i, z)
-				matrix[i][z] = 0
-				m[nextK] = true
-			}
-			// mark vertical
-			for z := 0; z < len(matrix); z++ {
-				if matrix[z][j] == 0 {
-					continue
-				}
-				nextK := fmt.Sprintf("%d-%d", z, j)
-				matrix[z][j] = 0
-				m[nextK] = true
+			if matrix[i][j] == 0 {
+				row[i] = true
+				col[j] = true
 			}
 		}
 	}
-	// printArr(matrix)
+
+	for i := range row {
+		for j := range matrix[i] {
+			matrix[i][j] = 0
+		}
+	}
+
+	for j := range col {
+		for i := range matrix {
+			matrix[i][j] = 0
+		}
+	}
 }
 
 func Execute(matrix [][]int) {
